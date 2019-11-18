@@ -19,12 +19,12 @@ def main():
     indices = np.argsort(data,axis=0)
 
     # Proceed for each column
-    #for x in range(data.shape[1]):
-        #print("Sorting along column number:",x)
+    for x in range(data.shape[1]):
+        print("Sorting along column number:",x)
         # Go through all data in sorted order
-        #for y in indices[:,x]:
+        for y in indices[:,x]:
             # Get one training example in sorted order
-            #print(data[y,:])
+            print(data[y,:])
             
 if __name__ == "__main__":
     main()
