@@ -10,6 +10,7 @@
 import sys, math
 import numpy as np
 
+# node class
 class node():
     def __init__(self):
         self.terminal = False
@@ -75,8 +76,7 @@ def build(data, numClass, numAttr, indices):
         newNode.left = None
         newNode.right = None
         return newNode
-    else:
-        # make child node
+    else: # make children nodes
         newNode = node()
         newNode.attribute, newNode.value = getSplit(last, info, indices, data, numAttr, numClass)
         
@@ -88,11 +88,13 @@ def build(data, numClass, numAttr, indices):
             newNode.left = None
             newNode.right = None
 
+            # unnecessarily long way to get the class label for equal number of each class label
+            # left in the data. Picks the smallest number class
             blah, count= np.unique(data[:, data.shape[1]-1], return_counts=True)
             idk = np.unique(count)
             if len(idk) == 1:
                 newNode.classification = blah[0]
-            else:
+            else: # majority vote class label
                 index = np.where(count == np.amax(count))
                 pointlessVariable = blah[index[0]]
                 newNode.classification = pointlessVariable[0]
@@ -125,7 +127,7 @@ def build(data, numClass, numAttr, indices):
 
         return newNode
 
-# test the data
+# test the data against the tree
 def test(testingData, training):
     correct = 0
 
@@ -169,15 +171,15 @@ def main():
         testingData = np.array([testingData])
 
 
-    labels = np.unique(trainingData[:, trainingData.shape[1]-1]) 
+    labels = np.unique(trainingData[:, trainingData.shape[1]-1]) # all unique class labels
     numClass = len(labels) # number of classes
     numAttr = trainingData.shape[1] - 1 # number of attributes (columns)
 
     indices = np.argsort(trainingData, axis=0) # locations of all the data in sorted order
 
     root = build(trainingData, numClass, numAttr, indices) # build the tree
-    results = test(testingData, root)
-    print(results) # test the testing data
+    results = test(testingData, root) # test the testing data
+    print(results) # print the number of correct classifications
 
 if __name__ == "__main__":
     main()
